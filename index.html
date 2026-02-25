@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>قهوه‌چی | طعم مورد علاقتو بساز</title>
+    <link href="https://cdn.fontcdn.ir/Font/Persian/Yekan/Yekan.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Yekan', sans-serif;
+            background: linear-gradient(145deg, #fdf8f2 0%, #f9e9d9 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2d1f14;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* هدر ساده و شیک */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            color: #a15e3a;
+            font-size: 0.95rem;
+        }
+
+        /* کارت اصلی */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 30px;
+            padding: 20px;
+            box-shadow: 0 15px 35px rgba(139, 69, 19, 0.15);
+            border: 1px solid rgba(210, 144, 88, 0.2);
+            margin-bottom: 20px;
+        }
+
+        /* عنوان بخش */
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            color: #8B4513;
+            font-size: 1.2rem;
+        }
+
+        .section-title span {
+            font-size: 1.5rem;
+        }
+
+        /* دکمه‌های انتخاب طعم - طراحی جدید و جذاب */
+        .flavor-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .flavor-btn {
+            background: white;
+            border: 2px solid #f0d5bc;
+            border-radius: 20px;
+            padding: 16px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .flavor-btn .emoji {
+            font-size: 2rem;
+            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.1));
+        }
+
+        .flavor-btn .name {
+            font-weight: bold;
+            color: #6b4226;
+            font-size: 0.9rem;
+        }
+
+        .flavor-btn .value {
+            background: #fff0e0;
+            padding: 4px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            color: #a15e3a;
+            font-weight: bold;
+            width: fit-content;
+        }
+
+        .flavor-btn.selected {
+            border-color: #D2691E;
+            background: linear-gradient(145deg, #fff8f0, #ffefe0);
+            box-shadow: 0 8px 20px rgba(210, 105, 30, 0.2);
+            transform: scale(1.02);
+        }
+
+        .flavor-btn.selected .value {
+            background: #D2691E;
+            color: white;
+        }
+
+        /* اسلایدر شدت طعم */
+        .intensity-section {
+            background: #fff5eb;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .intensity-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            color: #8B4513;
+        }
+
+        .intensity-label .selected-flavor {
+            background: #D2691E;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+
+        .slider-container {
+            position: relative;
+            padding: 10px 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #f7d6b5, #D2691E);
+            border-radius: 10px;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 28px;
+            height: 28px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(210, 105, 30, 0.3);
+            border: 3px solid #D2691E;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .intensity-values {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            color: #a15e3a;
+            font-size: 0.8rem;
+        }
+
+        /* دکمه نمایش نتیجه */
+        .show-result-btn {
+            background: linear-gradient(135deg, #8B4513, #D2691E);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 16px 30px;
+            width: 100%;
+            font-family: 'Yekan', sans-serif;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(210, 105, 30, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .show-result-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* پنل نتیجه */
+        .result-card {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 15px 30px rgba(139, 69, 19, 0.1);
+            display: none;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-card.show {
+            display: block;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .result-header .coffee-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .result-header h3 {
+            color: #8B4513;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .flavor-summary {
+            background: #fdf1e6;
+            border-radius: 20px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .flavor-summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #e0c6b0;
+        }
+
+        .flavor-summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .flavor-summary-item .label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #6b4226;
+        }
+
+        .flavor-summary-item .value {
+            background: #D2691E;
+            color: white;
+            padding: 2px 15px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+        }
+
+        .coffee-recommendation {
+            text-align: center;
+            margin: 25px 0;
+        }
+
+        .coffee-name {
+            font-size: 2rem;
+            color: #8B4513;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .coffee-desc {
+            color: #a15e3a;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .brewing-info {
+            background: #f5e6d8;
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+
+        .brewing-info p {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            color: #5a3e2b;
+        }
+
+        /* دکمه انتخاب مجدد */
+        .reset-btn {
+            background: transparent;
+            border: 2px solid #D2691E;
+            color: #D2691E;
+            border-radius: 30px;
+            padding: 12px;
+            width: 100%;
+            font-family: 'Yekan', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+        }
+
+        .reset-btn:active {
+            background: #D2691E;
+            color: white;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #a87b62;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>☕ قهوه‌چی</h1>
+            <p>طعم مورد علاقتو انتخاب کن، بقیه اش با من</p>
+        </div>
+
+        <div class="card">
+            <div class="section-title">
+                <span>🎯</span>
+                <span>طعم مورد نظرتو انتخاب کن</span>
+            </div>
+
+            <!-- دکمه‌های انتخاب طعم -->
+            <div class="flavor-grid">
+                <div class="flavor-btn selected" data-flavor="bitter">
+                    <span class="emoji">😋</span>
+                    <span class="name">تلخ</span>
+                    <span class="value" id="bitterValue">متوسط</span>
+                </div>
+                <div class="flavor-btn" data-flavor="sweet">
+                    <span class="emoji">🍯</span>
+                    <span class="name">شیرین</span>
+                    <span class="value" id="sweetValue">متوسط</span>
+                </div>
+                <div class="flavor-btn" data-flavor="sour">
+                    <span class="emoji">🍋</span>
+                    <span class="name">ترش</span>
+                    <span class="value" id="sourValue">متوسط</span>
+                </div>
+                <div class="flavor-btn" data-flavor="fruity">
+                    <span class="emoji">🍓</span>
+                    <span class="name">میوه‌ای</span>
+                    <span class="value" id="fruityValue">متوسط</span>
+                </div>
+            </div>
+
+            <!-- بخش تنظیم شدت طعم -->
+            <div class="intensity-section">
+                <div class="intensity-label">
+                    <span>🔧 شدت طعم <span id="selectedFlavorName">تلخ</span></span>
+                    <span class="selected-flavor" id="intensityLevel">50%</span>
+                </div>
+                
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" id="intensitySlider">
+                </div>
+                
+                <div class="intensity-values">
+                    <span>کم</span>
+                    <span>متوسط</span>
+                    <span>زیاد</span>
+                </div>
+            </div>
+
+            <!-- دکمه نمایش نتیجه -->
+            <button class="show-result-btn" id="showResultBtn">
+                <span>✨</span>
+                <span>نتیجه رو ببین</span>
+                <span>✨</span>
+            </button>
+        </div>
+
+        <!-- پنل نتیجه -->
+        <div class="result-card" id="resultCard">
+            <div class="result-header">
+                <div class="coffee-icon">☕</div>
+                <h3>قهوه پیشنهادی تو</h3>
+            </div>
+
+            <div class="flavor-summary">
+                <div class="flavor-summary-item">
+                    <span class="label">😋 تلخ</span>
+                    <span class="value" id="resultBitter">50%</span>
+                </div>
+                <div class="flavor-summary-item">
+                    <span class="label">🍯 شیرین</span>
+                    <span class="value" id="resultSweet">50%</span>
+                </div>
+                <div class="flavor-summary-item">
+                    <span class="label">🍋 ترش</span>
+                    <span class="value" id="resultSour">50%</span>
+                </div>
+                <div class="flavor-summary-item">
+                    <span class="label">🍓 میوه‌ای</span>
+                    <span class="value" id="resultFruity">50%</span>
+                </div>
+            </div>
+
+            <div class="coffee-recommendation">
+                <div class="coffee-name" id="coffeeName">کلمبیا سوپریمو</div>
+                <div class="coffee-desc" id="coffeeDesc">یک قهوه متعادل با طعم کارامل و گردو</div>
+            </div>
+
+            <div class="brewing-info">
+                <p>🔥 دمای آب: <span id="brewTemp">۹۳</span>°C</p>
+                <p>⏱️ زمان دم: <span id="brewTime">۳۰</span> ثانیه</p>
+                <p>💧 نسبت آب به قهوه: <span id="brewRatio">۱:۲</span></p>
+            </div>
+
+            <button class="reset-btn" id="resetBtn">
+                🔄 انتخاب دوباره
+            </button>
+        </div>
+
+        <div class="footer">
+            با ☕ برای عاشقان قهوه
+        </div>
+    </div>
+
+    <script>
+        // دیتابیس ساده قهوه
+        const coffees = [
+            {
+                name: "اتیوپی یرگاچف",
+                desc: "طعم مرکبات و گل، شیرینی ملایم",
+                type: "sour",
+                intensity: 80,
+                temp: "۹۲",
+                time: "۱۸۰",
+                ratio: "۱:۱۶"
+            },
+            {
+                name: "کلمبیا سوپریمو",
+                desc: "طعم کارامل و گردو، متعادل و محبوب",
+                type: "sweet",
+                intensity: 70,
+                temp: "۹۳",
+                time: "۳۰",
+                ratio: "۱:۲"
+            },
+            {
+                name: "برزیل سانتوس",
+                desc: "شکلات تلخ و بادام، بدن سنگین",
+                type: "bitter",
+                intensity: 85,
+                temp: "۹۴",
+                time: "۲۵",
+                ratio: "۱:۱.۵"
+            },
+            {
+                name: "کنیا AA",
+                desc: "تمشک و میوه‌های قرمز، اسیدیته بالا",
+                type: "fruity",
+                intensity: 75,
+                temp: "۸۹",
+                time: "۱۹۵",
+                ratio: "۱:۱۶"
+            },
+            {
+                name: "گواتمالا",
+                desc: "سیب و ادویه، شیرینی قهوه‌ای",
+                type: "sweet",
+                intensity: 60,
+                temp: "۹۱",
+                time: "۲۰۰",
+                ratio: "۱:۱۵"
+            },
+            {
+                name: "سوماترا",
+                desc: "خاکی و گیاهی، تلخی بالا",
+                type: "bitter",
+                intensity: 90,
+                temp: "۹۵",
+                time: "۲۶",
+                ratio: "۱:۲"
+            }
+        ];
+
+        // وضعیت فعلی
+        let currentFlavor = 'bitter';
+        let currentIntensity = 50;
+
+        // مقادیر پیشفرض طعم‌ها
+        const flavorValues = {
+            bitter: 50,
+            sweet: 50,
+            sour: 50,
+            fruity: 50
+        };
+
+        // المان‌ها
+        const flavorBtns = document.querySelectorAll('.flavor-btn');
+        const intensitySlider = document.getElementById('intensitySlider');
+        const intensityLevel = document.getElementById('intensityLevel');
+        const selectedFlavorName = document.getElementById('selectedFlavorName');
+        const showResultBtn = document.getElementById('showResultBtn');
+        const resultCard = document.getElementById('resultCard');
+        const resetBtn = document.getElementById('resetBtn');
+
+        // المان‌های نمایش مقادیر
+        const valueElements = {
+            bitter: document.getElementById('bitterValue'),
+            sweet: document.getElementById('sweetValue'),
+            sour: document.getElementById('sourValue'),
+            fruity: document.getElementById('fruityValue')
+        };
+
+        // المان‌های نتیجه
+        const resultElements = {
+            bitter: document.getElementById('resultBitter'),
+            sweet: document.getElementById('resultSweet'),
+            sour: document.getElementById('resultSour'),
+            fruity: document.getElementById('resultFruity')
+        };
+
+        // بروزرسانی نمایش مقادیر
+        function updateDisplayValues() {
+            for (const [flavor, value] of Object.entries(flavorValues)) {
+                let text = 'کم';
+                if (value > 66) text = 'زیاد';
+                else if (value > 33) text = 'متوسط';
+                else text = 'کم';
+                
+                valueElements[flavor].textContent = text;
+            }
+        }
+
+        // انتخاب طعم
+        flavorBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // حذف کلاس selected از همه
+                flavorBtns.forEach(b => b.classList.remove('selected'));
+                // اضافه کردن کلاس selected به دکمه فعلی
+                btn.classList.add('selected');
+                
+                // ذخیره طعم فعلی
+                currentFlavor = btn.dataset.flavor;
+                
+                // بروزرسانی نام طعم در بخش شدت
+                const flavorNames = {
+                    bitter: 'تلخ',
+                    sweet: 'شیرین',
+                    sour: 'ترش',
+                    fruity: 'میوه‌ای'
+                };
+                selectedFlavorName.textContent = flavorNames[currentFlavor];
+                
+                // تنظیم اسلایدر بر اساس مقدار فعلی
+                intensitySlider.value = flavorValues[currentFlavor];
+                intensityLevel.textContent = flavorValues[currentFlavor] + '%';
+            });
+        });
+
+        // تغییر شدت طعم
+        intensitySlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            currentIntensity = value;
+            intensityLevel.textContent = value + '%';
+            
+            // ذخیره مقدار برای طعم فعلی
+            flavorValues[currentFlavor] = value;
+            
+            // بروزرسانی نمایش
+            updateDisplayValues();
+        });
+
+        // نمایش نتیجه
+        function showResult() {
+            // بروزرسانی مقادیر در نتیجه
+            for (const [flavor, value] of Object.entries(flavorValues)) {
+                resultElements[flavor].textContent = value + '%';
+            }
+
+            // پیدا کردن بهترین قهوه بر اساس انتخاب‌ها
+            let bestMatch = coffees[0];
+            let bestScore = -1;
+
+            coffees.forEach(coffee => {
+                let score = 0;
+                
+                // هر چی مقدار طعم انتخابی به نوع قهوه نزدیک‌تر باشه امتیاز بیشتر
+                if (coffee.type === 'bitter') score += flavorValues.bitter * 1.5;
+                if (coffee.type === 'sweet') score += flavorValues.sweet * 1.5;
+                if (coffee.type === 'sour') score += flavorValues.sour * 1.5;
+                if (coffee.type === 'fruity') score += flavorValues.fruity * 1.5;
+                
+                // شدت طعم هم تاثیر داره
+                score += 100 - Math.abs(coffee.intensity - flavorValues[coffee.type]);
+                
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = coffee;
+                }
+            });
+
+            // نمایش اطلاعات قهوه پیشنهادی
+            document.getElementById('coffeeName').textContent = bestMatch.name;
+            document.getElementById('coffeeDesc').textContent = bestMatch.desc;
+            document.getElementById('brewTemp').textContent = bestMatch.temp;
+            document.getElementById('brewTime').textContent = bestMatch.time;
+            document.getElementById('brewRatio').textContent = bestMatch.ratio;
+
+            // نمایش کارت نتیجه
+            resultCard.classList.add('show');
+            
+            // اسکرول به نتیجه
+            resultCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // رویداد کلیک دکمه نمایش نتیجه
+        showResultBtn.addEventListener('click', showResult);
+
+        // دکمه انتخاب دوباره
+        resetBtn.addEventListener('click', () => {
+            // ریست همه مقادیر به ۵۰
+            flavorValues.bitter = 50;
+            flavorValues.sweet = 50;
+            flavorValues.sour = 50;
+            flavorValues.fruity = 50;
+            
+            // ریست اسلایدر
+            intensitySlider.value = 50;
+            intensityLevel.textContent = '50%';
+            
+            // بروزرسانی نمایش
+            updateDisplayValues();
+            
+            // مخفی کردن نتیجه
+            resultCard.classList.remove('show');
+            
+            // اسکرول به بالا
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // مقداردهی اولیه
+        updateDisplayValues();
+        selectedFlavorName.textContent = 'تلخ';
+    </script>
+</body>
+</html>
